@@ -1,0 +1,23 @@
+<div class='demo {{slide.class}}' id='{{slide.id}}'>
+  <div class='description'>
+    <h2>{{slide.title}}</h2>
+    {{{ slide.content }}}
+  </div>
+  <nav class='subnav tabs'><ul>
+    {{# slide.blocks }}
+    <li class='{{class}}'>
+      <a href='#panel-{{id}}'>
+        {{{ title }}}
+      </a>
+    </li>
+    {{/ slide.blocks }}
+  </ul></nav>
+  <div class="panels">
+  	{{# slide.blocks }}
+		<div class="panel" id="panel-{{id}}">
+      {{{ content }}}
+		</div>
+    {{/ slide.blocks }}
+  </div>
+</div>
+{{> separator }}

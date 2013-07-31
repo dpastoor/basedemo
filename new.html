@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="ie9 ie8 ie7 ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="ie9 ie8 ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="ie9 ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <title>BumpCharts with R and Rickshaw</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel='stylesheet' media='all' href='libraries/frameworks/basedemo/css/bd.styles.css'>
+   <link rel="stylesheet" href="libraries/highlighters/prettify/css/twitter-bootstrap.css" />
+   <script src='libraries/frameworks/basedemo/js/bd.jquery.min.js'></script>
+   <script src='libraries/frameworks/basedemo/js/bd.ui.js'></script>
+      <link rel=stylesheet href="http://fonts.googleapis.com/css?family=Open+Sans"></link>
+
+   
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="page">
+      <nav class="nav">
+	<ul>
+<li><a href="about">About</a></li>
+<li><a href="http://rcharts.io">rCharts</a></li>
+<li class = 'download'><a href="item3">Download</a></li>
+</ul>
+
+</nav>
+<header class="header">
+  <h1>BaseDemo <span class="version"></span></h1>
+	<p>BaseDemo is just a basic template that can be used for creating demos for your development projects. It also works great for GitHub Pages. This is an example of what you could do with this template and some content types.</p>
+
+<style>
+  iframe {width: 100%; height: 350px;}
+  /*
+  p{font-family: "Open Sans"}
+  pre, code{font-family: "Monaco";}
+  code{color: #D14}
+  */
+</style>
+
+<script>var myScriptSrc = "libraries/frameworks/basedemo/css/";</script>
+
+	<div class="custom-nav"></div>
+</header>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>
+<div class='demo ' id='slide-3'>
+  <div class='description'>
+    <h2>Get Data</h2>
+    <p>Our first step is to read the data from the URL using <code>read.csv</code>, and extract the columns of interest. <code>FTR</code> stands for <strong>Full Time Result</strong> and is coded as <code>H</code>, <code>A</code> or <code>D</code>, depending on whether the home team or the away team won, or the game ended in a draw. We rename the columns for easier usage, and also format the <code>date</code> appropriately.</p>
+
+  </div>
+  <nav class='subnav tabs'><ul>
+    <li class='active'>
+      <a href='#panel-1'>
+        Code
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-2'>
+        Result
+      </a>
+    </li>
+  </ul></nav>
+  <div class="panels">
+		<div class="panel" id="panel-1">
+      <pre><code class="r">dataURL &lt;- &#39;http://www.football-data.co.uk/mmz4281/1213/E0.csv&#39;
+df &lt;- read.csv(dataURL, stringsAsFactors = F)
+df &lt;- df[, c(&quot;Date&quot;, &quot;HomeTeam&quot;, &quot;AwayTeam&quot;, &quot;FTR&quot;)]
+df &lt;- rename(df, c(Date = &quot;date&quot;, HomeTeam = &quot;H&quot;, AwayTeam = &quot;A&quot;))
+df$date &lt;- as.Date(df$date, format = &quot;%d/%m/%y&quot;)
+head(df)
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-2">
+      <pre><code>        date         H          A FTR
+1 2012-08-18   Arsenal Sunderland   D
+2 2012-08-18    Fulham    Norwich   H
+3 2012-08-18 Newcastle  Tottenham   H
+4 2012-08-18       QPR    Swansea   A
+5 2012-08-18   Reading      Stoke   D
+6 2012-08-18 West Brom  Liverpool   H
+</code></pre>
+
+		</div>
+  </div>
+</div>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>
+<div class='demo ' id='slide-4'>
+  <div class='description'>
+    <h2>Process Data</h2>
+    <p>Our next step is to <code>melt</code> the data into its long-form, and add a column for <code>points</code> collected by the team. The first two expressions below, <code>melt</code> the data and <code>arrange</code> it in ascending order by <code>date</code>. To calculate the <code>points</code> collected by the team, we employ a simple math trick instead of writing a nested <code>if-then-else</code> statement. The idea is that the team gets 3 points on a win ( <code>loc</code> equals <code>FTR</code>), 1 point on a draw (<code>FTR</code> equals <code>D</code>) and zero otherwise.</p>
+
+  </div>
+  <nav class='subnav tabs'><ul>
+    <li class='active'>
+      <a href='#panel-b1'>
+        Code
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-b2'>
+        Result
+      </a>
+    </li>
+  </ul></nav>
+  <div class="panels">
+		<div class="panel" id="panel-b1">
+      <pre><code class="r">dfm &lt;- melt(df, measure.vars = c(&quot;H&quot;, &quot;A&quot;), 
+  variable.name = &quot;loc&quot;, value.name = &#39;team&#39;)
+dfm &lt;- arrange(dfm, date)
+dfm &lt;- mutate(dfm, 
+  loc = as.character(loc), 
+  points = 3*(loc == FTR) + 1*(FTR == &#39;D&#39;)
+)
+head(dfm)
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-b2">
+      <pre><code>        date FTR loc      team points
+1 2012-08-18   D   H   Arsenal      1
+2 2012-08-18   H   H    Fulham      3
+3 2012-08-18   H   H Newcastle      3
+4 2012-08-18   A   H       QPR      0
+5 2012-08-18   D   H   Reading      1
+6 2012-08-18   H   H West Brom      3
+</code></pre>
+
+		</div>
+  </div>
+</div>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>	
+		</div>
+	</div>
+
+</body>
+  
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>

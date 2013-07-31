@@ -1,0 +1,98 @@
+---
+title: BumpCharts with R and Rickshaw
+framework: basedemo
+highlighter: prettify
+hitheme: twitter-bootstrap
+mode: selfcontained
+assets:
+  css: 'http://fonts.googleapis.com/css?family=Open+Sans'
+--- &nav
+
+- [About](about)
+- [rCharts](http://rcharts.io)
+- .download [Download](item3)
+
+--- &header
+
+## BaseDemo 
+
+BaseDemo is just a basic template that can be used for creating demos for your development projects. It also works great for GitHub Pages. This is an example of what you could do with this template and some content types.
+
+
+```{r setup, echo = F, cache = F}
+library(plyr)
+library(reshape2)
+knitr::opts_chunk$set(tidy = F)
+```
+
+<style>
+  iframe {width: 100%; height: 350px;}
+  /*
+  p{font-family: "Open Sans"}
+  pre, code{font-family: "Monaco";}
+  code{color: #D14}
+  */
+</style>
+<script>var myScriptSrc = "libraries/frameworks/basedemo/css/";</script>
+
+--- &demo
+
+## Get Data
+
+Our first step is to read the data from the URL using `read.csv`, and extract the columns of interest. `FTR` stands for __Full Time Result__ and is coded as `H`, `A` or `D`, depending on whether the home team or the away team won, or the game ended in a draw. We rename the columns for easier usage, and also format the `date` appropriately.
+
+
+*** .active #1
+
+## Code
+
+```{r get-data, results = 'hide'}
+dataURL <- 'http://www.football-data.co.uk/mmz4281/1213/E0.csv'
+df <- read.csv(dataURL, stringsAsFactors = F)
+df <- df[, c("Date", "HomeTeam", "AwayTeam", "FTR")]
+df <- rename(df, c(Date = "date", HomeTeam = "H", AwayTeam = "A"))
+df$date <- as.Date(df$date, format = "%d/%m/%y")
+head(df)
+```
+
+*** #2
+
+## Result
+
+```{r ref.label = 'get-data', echo = F, results = 'markup', comment = NA}
+```
+
+--- &demo
+
+## Process Data
+
+Our next step is to `melt` the data into its long-form, and add a column for `points` collected by the team. The first two expressions below, `melt` the data and `arrange` it in ascending order by `date`. To calculate the `points` collected by the team, we employ a simple math trick instead of writing a nested `if-then-else` statement. The idea is that the team gets 3 points on a win ( `loc` equals `FTR`), 1 point on a draw (`FTR` equals `D`) and zero otherwise.
+
+*** .active #b1
+
+## Code
+
+```{r process-data-1, results = 'hide'}
+dfm <- melt(df, measure.vars = c("H", "A"), 
+  variable.name = "loc", value.name = 'team')
+dfm <- arrange(dfm, date)
+dfm <- mutate(dfm, 
+  loc = as.character(loc), 
+  points = 3*(loc == FTR) + 1*(FTR == 'D')
+)
+head(dfm)
+```
+
+*** #b2
+
+## Result
+
+```{r ref.label = 'process-data-1', echo = F, results = 'markup', comment = NA}
+```
+
+
+
+
+
+
+

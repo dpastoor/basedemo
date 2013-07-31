@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="ie9 ie8 ie7 ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="ie9 ie8 ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="ie9 ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
+<!--[if gt IE 9]><!--><html lang="en"><!--<![endif]-->
+<head>
+    <title></title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel='stylesheet' media='all' href='libraries/frameworks/basedemo/css/bd.styles.css'>
+   <link rel="stylesheet" href="libraries/highlighters/prettify/css/twitter-bootstrap.css" />
+   <script src='libraries/frameworks/basedemo/js/bd.jquery.min.js'></script>
+   <script src='libraries/frameworks/basedemo/js/bd.ui.js'></script>
+      
+   
+</head>
+<body>
+
+	<div class="wrapper">
+		<div class="page">
+      <nav class="nav">
+	<ul>
+<li><a href="item1">Item 1</a></li>
+<li><a href="item2">Item 2</a></li>
+<li class = 'download'><a href="item3">Item 3</a></li>
+</ul>
+
+</nav>
+<header class="header">
+  <h1>BaseDemo <span class="version">v1</span></h1>
+	<p>BaseDemo is just a basic template that can be used for creating demos for your development projects. It also works great for GitHub Pages. This is an example of what you could do with this template and some content types.</p>
+
+<style>iframe {width: 100%; height: 350px;}</style>
+
+	<div class="custom-nav"></div>
+</header>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>
+<div class='demo ' id='slide-3'>
+  <div class='description'>
+    <h2>Example One</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pellentesque risus id eros semper non eleifend lorem imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam fermentum sapien non nibh consectetur elementum.</p>
+
+  </div>
+  <nav class='subnav tabs'><ul>
+    <li class='active'>
+      <a href='#panel-1'>
+        Code
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-2'>
+        Result
+      </a>
+    </li>
+  </ul></nav>
+  <div class="panels">
+		<div class="panel" id="panel-1">
+      <pre><code class="r">require(rCharts)
+options(RCHART_WIDTH = 650, RCHART_HEIGHT = 300)
+r1 &lt;- rPlot(mpg ~ wt, data = mtcars, type = &#39;point&#39;)
+r1
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-2">
+      <iframe src=assets/fig/unnamed-chunk-1.html seamless></iframe>
+
+		</div>
+  </div>
+</div>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>
+<div class='demo RAW' id='slide-4'>
+  <div class='description'>
+    <h2>Slide Layouts</h2>
+    
+  </div>
+  <nav class='subnav tabs'><ul>
+    <li class='active'>
+      <a href='#panel-c1'>
+        Slide
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-c2'>
+        Parsed
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-c3'>
+        Layout
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-c4'>
+        Rendered
+      </a>
+    </li>
+    <li class=''>
+      <a href='#panel-c5'>
+        View
+      </a>
+    </li>
+  </ul></nav>
+  <div class="panels">
+		<div class="panel" id="panel-c1">
+      <pre><code>--- .class1 #id1 bg:yellow
+
+## Slide Title
+
+Slide Contents
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-c2">
+      <pre><code>$html
+[1] &quot;&lt;h2&gt;Slide Title&lt;/h2&gt;\n\n&lt;p&gt;Slide Contents&lt;/p&gt;\n&quot;
+
+$header
+[1] &quot;&lt;h2&gt;Slide Title&lt;/h2&gt;&quot;
+
+$level
+[1] &quot;2&quot;
+
+$title
+[1] &quot;Slide Title&quot;
+
+$content
+[1] &quot;&lt;p&gt;Slide Contents&lt;/p&gt;\n&quot;
+
+$id
+[1] &quot;id1&quot;
+
+$bg
+[1] &quot;yellow&quot;
+
+$class
+[1] &quot;class1&quot;
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-c3">
+      <pre><code>&lt;slide class=&quot;{{ slide.class }}&quot; id=&quot;{{ slide.id }}&quot; style=&quot;background:{{{ slide.bg }}};&quot;&gt;
+  {{# slide.header }}
+  &lt;hgroup&gt;
+    {{{ slide.header}}}
+  &lt;/hgroup&gt;
+  {{/ slide.header }}
+  &lt;article data-timings=&quot;{{ slide.dt }}&quot;&gt;
+    {{{ slide.content }}}
+  &lt;/article&gt;
+  &lt;!-- Presenter Notes --&gt;
+  {{# slide.pnotes }}
+  &lt;aside class=&quot;note&quot; id=&quot;{{ id }}&quot;&gt;
+    &lt;section&gt;
+      {{{ html }}}
+    &lt;/section&gt;
+  &lt;/aside&gt;
+  {{/ slide.pnotes }}
+&lt;/slide&gt;
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-c4">
+      <pre><code>&lt;slide class=&quot;class1&quot; id=&quot;id1&quot; style=&quot;background:yellow;&quot;&gt;
+  &lt;hgroup&gt;
+    &lt;h2&gt;Slide Title&lt;/h2&gt;
+  &lt;/hgroup&gt;
+  &lt;article data-timings=&quot;&quot;&gt;
+    &lt;p&gt;Slide Contents&lt;/p&gt;
+
+  &lt;/article&gt;
+  &lt;!-- Presenter Notes --&gt;
+&lt;/slide&gt;
+</code></pre>
+
+		</div>
+		<div class="panel" id="panel-c5">
+      <p><slide class="class1" id="id1" style="background:yellow;">
+  <hgroup>
+    <h2>Slide Title</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Slide Contents</p></p>
+
+<p></article>
+  &lt;!-- Presenter Notes --&gt;
+</slide></p>
+
+		</div>
+  </div>
+</div>
+<div class="sep">
+  <span class="left-arrow arrow"></span>
+  <span class="right-arrow arrow"></span>
+</div>	
+		</div>
+	</div>
+
+</body>
+  
+  <!-- Google Prettify -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+  <script src='libraries/highlighters/prettify/js/lang-r.js'></script>
+  <script>
+    var pres = document.getElementsByTagName("pre");
+    for (var i=0; i < pres.length; ++i) {
+      pres[i].className = "prettyprint linenums";
+    }
+    prettyPrint();
+  </script>
+  <!-- End Google Prettify --> 
+  </html>

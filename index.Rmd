@@ -1,0 +1,110 @@
+---
+framework: basedemo
+highlighter: prettify
+hitheme: twitter-bootstrap
+mode: selfcontained
+--- &nav
+
+- [Item 1](item1)
+- [Item 2](item2)
+- .download [Item 3](item3)
+
+--- &header version:v1
+
+## BaseDemo 
+
+BaseDemo is just a basic template that can be used for creating demos for your development projects. It also works great for GitHub Pages. This is an example of what you could do with this template and some content types.
+
+```{r setup, echo = F, cache = F}
+knitr::opts_chunk$set(tidy = F, fig.path = 'assets/fig/')
+```
+
+
+<style>iframe {width: 100%; height: 350px;}</style>
+
+--- &demo
+
+## Example One
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum pellentesque risus id eros semper non eleifend lorem imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam fermentum sapien non nibh consectetur elementum.
+
+*** .active #1
+
+## Code
+
+```{r chart1, results = 'hide', comment = NA, message = F}
+require(rCharts)
+options(RCHART_WIDTH = 650, RCHART_HEIGHT = 300)
+r1 <- rPlot(mpg ~ wt, data = mtcars, type = 'point')
+r1
+```
+
+
+*** #2
+
+## Result
+
+```{r ref.label = 'chart1', echo = F, results = 'asis'}
+```
+
+--- &demo .RAW
+
+## Slide Layouts
+
+*** #c1 .active
+
+## Slide
+
+```{r echo = F, comment = NA}
+slide <- '--- .class1 #id1 bg:yellow
+
+## Slide Title
+
+Slide Contents'
+cat(slide)
+```
+
+*** #c2
+
+## Parsed
+
+```{r echo = F, comment = NA}
+payload <- slidify:::parse_slide(slide)
+payload
+```
+
+
+*** #c3
+
+## Layout
+
+
+```{r echo = F, comment = NA}
+layout <- paste(capture.output(slidify:::get_slide_layout('io2012')), 
+  collapse = '\n')
+cat(layout)
+```
+
+
+*** #c4
+
+## Rendered
+
+```{r render, echo = F, comment = NA}
+rendered = rCharts::render_template(layout, list(slide = payload))
+cat(rendered)
+```
+
+
+*** #c5
+
+## View
+
+```{r ref.label = 'render', results = 'asis', echo = F}
+```
+
+
+
+
+
+
